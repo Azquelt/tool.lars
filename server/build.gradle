@@ -330,7 +330,7 @@ task testLarsPackage(type: JavaExec) {
     standardOutput = new ByteArrayOutputStream() // Hide the stdout from the screen.
     errorOutput = new ByteArrayOutputStream()
     standardInput = new ByteArrayInputStream(badDirName.getBytes())
-    args createLarsPackage.outputs.files.getAt(0)
+    args createLarsPackage.outputs.files.first()
                
     doLast {
         String errorString = errorOutput.toString()
@@ -350,7 +350,7 @@ task testJarContents {
     dependsOn 'createLarsPackage'
 
     doLast{
-        checkZipContents(createLarsPackage.outputs.files.getAt(0),
+        checkZipContents(createLarsPackage.outputs.files.first(),
             ['wlp/usr/servers/larsServer/server.xml', 'wlp/usr/servers/larsServer/LICENSE'])
     }
 }
@@ -390,7 +390,7 @@ task createPackageUsrDir (type: Copy) {
 }
 
 File getMongodExecutable() {
-    File mongod = new File(property('mongodExecutable'))
+    File mongod = file(property('mongodExecutable'))
     if (!mongod.exists()) {
         throw new Exception("Cannot find mongod executable at: " + mongod)
     }
